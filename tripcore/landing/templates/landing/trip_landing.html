@@ -1,1 +1,13 @@
-{% extends 'landing/base.html' %}
+{% extends 'landing/trip_base.html' %}
+{% block content %}
+    <div class='container'>
+        <h1>Welcome to the Toatally Rad Inventory Project</h1>
+        <p>Please choose:
+            <ul>
+                <li><a href="{% url 'rental-home' %}">Rentals</a></li>
+                <li><a href="{% url 'users-home' %}">Profile</a></li>
+                <li><a href="{% url 'inventory-home' %}">Inventory</a></li>
+            </ul>
+        </p>
+    </div>
+{% endblock content %}
