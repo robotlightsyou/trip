@@ -1,6 +1,11 @@
 {% extends 'landing/trip_base.html' %}
 {% block  content %}
     <p>This is the Inventory base</p>
+    <ul>
+        <li><a href="{% url 'trip_inventory-company' %}">Company</a></li>
+        <li><a href="{% url 'trip_inventory-out' %}">Rented to You</a></li>
+        <li><a href="{% url 'trip_inventory-personal' %}">Personally Owned</a></li>
+    </ul>
 {% endblock content %}
 {% comment %} 
 

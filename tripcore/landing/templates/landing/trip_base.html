@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'landing/main.css' %}">
 
+
+
+
     {% if title %}
         <title>{{ title }}</title>
     {% else %}
@@ -28,7 +31,7 @@
                         <a class="nav-item nav-link" href="{% url 'trip_landing-home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'trip_users-home' %}">Profile</a>
                         <a class="nav-item nav-link" href="{% url 'trip_inventory-home' %}">Inventory</a>
-                        <a class="nav-item nav-link" href="{% url 'trip_rental-home' %}">Check In/Out</a>
+                        <a class="nac-item nav-link" href="{% url 'trip_checkout' %}">Check Out</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
