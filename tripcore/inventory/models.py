@@ -53,9 +53,9 @@ class Fixture(models.Model):
     last_service = models.TextField()
     model = models.CharField(max_length=100)
     manufacturer = models.CharField(max_length=100)
-    # source = models.CharField(max_length=20)
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='conventional')
     # kind = models.CharField(max_length=20)
-    source = forms.CharField(max_length=15, label='Source:', widget = forms.Select(choices=SOURCE_CHOICES))
+    # source = forms.CharField(max_length=15, label='Source:', widget = forms.Select(choices=SOURCE_CHOICES))
     # kind = forms.CharField(max_length=50, label='Source Kind', widget=forms.Select(choices=choose_source(source)), default='conventional')
 
 # class LED(BASE):
