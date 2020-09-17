@@ -21,5 +21,5 @@ urlpatterns = [
     path('trip/', include('landing.urls')),
     path('trip/inventory/', include('inventory.urls')),
     path('trip/rental/', include('rental.urls')),
-    path('trip/users', include('users.urls')),
+    path('trip/users/', include('users.urls')),
 ]
