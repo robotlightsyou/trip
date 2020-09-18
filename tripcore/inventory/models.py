@@ -44,6 +44,22 @@ MOVER_KIND_CHOICES = (
     ('lamp_mover', 'Lamped Mover'),
 )
 
+SELECT_SOURCE = ('select_source', 'Select Source')
+
+def get_kind(parent_type):
+    if parent_type == 'led':
+        # return LED_KIND_CHOICES
+        return models.CharField(max_length=20, choices=LED_KIND_CHOICES, default = 'select_source')
+    elif parent_type == 'conventional':
+        # return CONVENTIONAL_KIND_CHOICES
+        return models.CharField(max_length=20, choices=CONVENTIONAL_KIND_CHOICES, default = 'select_source')
+    elif parent_type == 'mover':
+        # return MOVER_KIND_CHOICES
+        return models.CharField(max_length=20, choices=MOVER_KIND_CHOICES, default = 'select_source')
+    else:
+        print('Invalid choice')
+        # raise ValueError
+
 class Fixture(models.Model):
     #change to foreign key of users?
     owner = models.CharField(max_length=100)
@@ -54,7 +70,8 @@ class Fixture(models.Model):
     model = models.CharField(max_length=100)
     manufacturer = models.CharField(max_length=100)
     source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='conventional')
-    # kind = models.CharField(max_length=20)
+    kind = get_kind(source)
+    # kind = models.CharField(max_length=20, choices=choose_source(source) or SELECT_SOURCE, default = 'select_source')
     # source = forms.CharField(max_length=15, label='Source:', widget = forms.Select(choices=SOURCE_CHOICES))
     # kind = forms.CharField(max_length=50, label='Source Kind', widget=forms.Select(choices=choose_source(source)), default='conventional')
 
@@ -69,7 +86,7 @@ class Fixture(models.Model):
 #     pass
 
 # class LED_Leko(LED):
-#     pass
+#     pas
 
 # class Conventional(BASE):
 #     source = models.CharField(max_length=20)
