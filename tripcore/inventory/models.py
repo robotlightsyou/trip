@@ -67,8 +67,9 @@ def get_kind(parent_type):
 
 
 class Source(models.Model):
-    name = models.CharField(
-        max_length=20, choices=SOURCE_CHOICES, default='conventional')
+    name = models.CharField(max_length=20)
+    # name = models.CharField(
+    # max_length=20, choices=SOURCE_CHOICES, default='conventional')
 
     def __str__(self):
         return self.name
@@ -76,8 +77,9 @@ class Source(models.Model):
 
 class Kind(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    name = models.CharField(
-        max_length=20, choices=SOURCE_CHOICES, default='conventional')
+    name = models.CharField(max_length=20)
+    # name = models.CharField(
+    #     max_length=20, choices=SOURCE_CHOICES, default='conventional')
 
 
 class Fixture(models.Model):
@@ -101,7 +103,7 @@ class Fixture(models.Model):
         return ' '.join([self.manufacturer, self.model])
 
     # def get_absolute_url(self):
-    #     return reverse('post-detail', kwargs={'pk':self.pk})
+    #     return reverse('fixture-list', kwargs={'pk': self.pk})
 
 
 # class LED(BASE):

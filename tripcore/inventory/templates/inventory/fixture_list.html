@@ -1,0 +1,17 @@
+{% extends 'inventory/inventory_base.html' %}
+{% block  content %}
+    <p>This is the fixture_list.html</p>
+    <p>This is a landing page for all fixture actions</p>
+    <h2>Fixture Form</h2>
+    <form method="post" novalidate>
+        {% comment %} {% csrf_token %} {% endcomment %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button type="submit">Save</button>
+        <a href="{% url 'fixture-list' %}">Nevermind</a>
+    </form>
+{% endblock content %}
+
+{% comment %} things you have access to rent {% endcomment %}
+

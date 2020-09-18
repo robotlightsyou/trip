@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
-from .models import Fixture
+from .models import Fixture, Kind
+from .forms import FixtureForm
 
 # Create your views here.
 
@@ -22,18 +23,28 @@ def personal(request):
     return render(request, 'inventory/personal.html', {'title': 'Inventory - Owned'})
 
 # add changes per simpleisbetter... method
+
+
 class FixtureListView(ListView):
     model = Fixture
     context_object_name = 'fixtures'
 
+
 class FixtureCreateView(CreateView):
-    model = Fixture
+    model = FixtureForm
     fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
               'model', 'manufacturer', 'source', 'kind')
     success_url = reverse_lazy('fixture_list')
 
+
 class FixtureUpdateView(UpdateView):
-    model = Fixture
+    model = FixtureForm
     fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
               'model', 'manufacturer', 'source', 'kind')
     success_url = reverse_lazy('fixture_list')
+
+
+def load_kinds(request):
+    source_id = request.GET.get('source')
+    kinds = Kind.objects.filter(source_id=source_id).order_by('name')
+    return render(request, 'inventory/kind_dropdown_options.html', {'kinds': kinds})

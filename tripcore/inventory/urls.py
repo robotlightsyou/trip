@@ -10,5 +10,6 @@ urlpatterns = [
     # add views for simpleisbetter... dynamic dropdown method
     path('fixture/', iviews.FixtureListView.as_view(), name='fixture-list'),
     path('fixture/add/', iviews.FixtureCreateView.as_view(), name='fixture-add'),
-    # path('fixture/<int:pk>/', iviews.FixtureUpdateView(), name='fixture_update'),
+    path('fixture/<int:pk>/', iviews.FixtureUpdateView.as_view(), name='fixture_update'),
+    path('ajax/load-kinds/', iviews.load_kinds, name='ajax_load_kinds'),
 ]
