@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.views.generic import ListView, CreateView, UpdateView
+from django.urls import reverse_lazy
+from .models import Fixture
 
 # Create your views here.
 
@@ -17,3 +20,20 @@ def out(request):
 
 def personal(request):
     return render(request, 'inventory/personal.html', {'title': 'Inventory - Owned'})
+
+# add changes per simpleisbetter... method
+class FixtureListView(ListView):
+    model = Fixture
+    context_object_name = 'fixtures'
+
+class FixtureCreateView(CreateView):
+    model = Fixture
+    fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
+              'model', 'manufacturer', 'source', 'kind')
+    success_url = reverse_lazy('fixture_list')
+
+class FixtureUpdateView(UpdateView):
+    model = Fixture
+    fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
+              'model', 'manufacturer', 'source', 'kind')
+    success_url = reverse_lazy('fixture_list')
