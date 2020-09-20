@@ -1,12 +1,12 @@
 {% extends 'inventory/inventory_base.html' %}
 {% load crispy_forms_tags %}
 {% block  content %}
-    <p>This is the fixture_add.html</p>
+    <p>This is the fixture_form.html</p>
     <p>This is where to add new items to inventory.</p>
 
     <h2>Fixture Form</h2>
 
-    <form method="post" id="fixtureForm" data-cities-url="{% url 'ajax_load_cities' %}" novalidate>
+    <form method="post" id="fixtureForm" data-fixture_types-url="{% url 'ajax_load_fixture_types' %}" novalidate>
         {% comment %} {% csrf_token %} {% endcomment %}
         <table>
             {{ form|crispy }}
@@ -14,23 +14,41 @@
         <button type="submit">Save</button>
         <a href="{% url 'fixture-list' %}">Nevermind</a>
     </form>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    {% comment %} <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> {% endcomment %}
     <script>
+        $("#id_manufacturer").change(function () {
+        
+        var url = $("#fixtureForm").attr("data-fixture_types-url");  // get the url of the `load_cities` view
+        var manufacturerId = $(this).val();  // get the selected country ID from the HTML input
+        console.log( $(this).val() );
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                    'manufacturer': manufacturerId       // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                    $("#id_fixture_type").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+            });
+        });
+    </script>
+    {% comment %} <script>
         $("#id_source").change(function () {
-        var url = $("#fixtureForm").attr("data-kinds-url");  // get the url of the `load_cities` view
-        var countryId = $(this).val();  // get the selected country ID from the HTML input
+        var url = $("#fixtureForm").attr("data-source_types-url");  // get the url of the `load_cities` view
+        var sourceId = $(this).val();  // get the selected country ID from the HTML input
             $.ajax({                       // initialize an AJAX request
                 url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
                 data: {
                     'source': sourceId       // add the country id to the GET parameters
                 },
                 success: function (data) {   // `data` is the return of the `load_cities` view function
-                    $("#id_kind").html(data);  // replace the contents of the city input with the data that came from the server
+                    $("#id_source_type").html(data);  // replace the contents of the city input with the data that came from the server
                 }
             });
         });
-    </script>
+    </script> {% endcomment %}
+
 
 
 {% endblock content %}

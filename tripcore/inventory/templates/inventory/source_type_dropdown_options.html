@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for source_type in source_types %}
+<option value="{{ source_type.pk }}">{{ source_type.name }}</option>
+{% endfor %}

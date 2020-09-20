@@ -5,82 +5,36 @@ from django.urls import reverse
 from django.db import models
 from django import forms
 
-# RENT_STATUS_CHOICES =
-
-
-def choose_source(source):
-    if source == 'led':
-        return LED_KIND_CHOICES
-    elif source == 'conventional':
-        return CONVENTIONAL_KIND_CHOICES
-    elif source == 'mover':
-        return MOVER_KIND_CHOICES
-    else:
-        print('Invalid choice')
-        # raise ValueError
-
-
-SOURCE_CHOICES = (
-    ('led', 'LED'),
-    ('conventional', "Conventional"),
-    ('mover', 'Mover')
-)
-
-LED_KIND_CHOICES = (
-    ('rgb', 'RGB'),
-    ('rgba', 'RGBA'),
-    ('rgbw', 'RGBW'),
-    ('rgbaw', 'RGBAW'),
-    ('rgbawuv', 'RGBAWUV'),
-    ('other', 'Other'),
-)
-CONVENTIONAL_KIND_CHOICES = (
-    ('500', '500'),
-    ('575', '575'),
-    ('750', '750'),
-    ('1_000', '1_000'),
-)
-
-MOVER_KIND_CHOICES = (
-    ('led_mover', 'LED Mover'),
-    ('lamp_mover', 'Lamped Mover'),
-)
-
-SELECT_SOURCE = ('select_source', 'Select Source')
-
-
-def get_kind(parent_type):
-    if parent_type == 'led':
-        # return LED_KIND_CHOICES
-        return models.CharField(max_length=20, choices=LED_KIND_CHOICES, default='select_source')
-    elif parent_type == 'conventional':
-        # return CONVENTIONAL_KIND_CHOICES
-        return models.CharField(max_length=20, choices=CONVENTIONAL_KIND_CHOICES, default='select_source')
-    elif parent_type == 'mover':
-        # return MOVER_KIND_CHOICES
-        return models.CharField(max_length=20, choices=MOVER_KIND_CHOICES, default='select_source')
-    else:
-        print('Invalid choice')
-        # raise ValueError
 
 # add classes per https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html
 
 
 class Source(models.Model):
     name = models.CharField(max_length=20)
-    # name = models.CharField(
-    # max_length=20, choices=SOURCE_CHOICES, default='conventional')
 
     def __str__(self):
         return self.name
 
 
-class Kind(models.Model):
+class Source_Type(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
-    # name = models.CharField(
-    #     max_length=20, choices=SOURCE_CHOICES, default='conventional')
 
+    def __str__(self):
+        return self.name
+
+class Manufacturer(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Fixture_Type(models.Model):
+    name = models.CharField(max_length=100)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 class Fixture(models.Model):
     # change to foreign key of users?
@@ -89,10 +43,12 @@ class Fixture(models.Model):
     last_rented = models.DateTimeField(default=None)
     last_sickbay = models.DateTimeField(default=None)
     last_service = models.TextField()
-    model = models.CharField(max_length=100)
-    manufacturer = models.CharField(max_length=100)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True)
+    fixture_type = models.ForeignKey(Fixture_Type, on_delete=models.SET_NULL, null=True)
+    # model = models.CharField(max_length=100)
+    # manufacturer = models.CharField(max_length=100)
     source = models.ForeignKey(Source, on_delete=models.SET_NULL, null=True)
-    kind = models.ForeignKey(Kind, on_delete=models.SET_NULL, null=True)
+    source_type = models.ForeignKey(Source_Type, on_delete=models.SET_NULL, null=True)
     # source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='conventional')
     # kind = get_kind(source)
     # kind = models.CharField(max_length=20, choices=choose_source(source) or SELECT_SOURCE, default = 'select_source')
@@ -100,7 +56,16 @@ class Fixture(models.Model):
     # kind = forms.CharField(max_length=50, label='Source Kind', widget=forms.Select(choices=choose_source(source)), default='conventional')
 
     def __str__(self):
-        return ' '.join([self.manufacturer, self.model])
+        return ' '.join([self.manufacturer, self.fixture_type])
+
+
+
+class Projector(Fixture):
+    pass
+
+
+class Hardware(Fixture):
+    pass
 
     # def get_absolute_url(self):
     #     return reverse('fixture-list', kwargs={'pk': self.pk})
@@ -145,9 +110,62 @@ class Fixture(models.Model):
 # class Lamp_Mover(Mover):
 #     pass
 
-class Projector(Fixture):
-    pass
 
 
-class Hardware(Fixture):
-    pass
+# def choose_source(source):
+#     if source == 'led':
+#         return LED_KIND_CHOICES
+#     elif source == 'conventional':
+#         return CONVENTIONAL_KIND_CHOICES
+#     elif source == 'mover':
+#         return MOVER_KIND_CHOICES
+#     else:
+#         print('Invalid choice')
+#         # raise ValueError
+
+
+
+# SOURCE_CHOICES = (
+#     ('led', 'LED'),
+#     ('conventional', "Conventional"),
+#     ('mover', 'Mover')
+# )
+
+# LED_KIND_CHOICES = (
+#     ('rgb', 'RGB'),
+#     ('rgba', 'RGBA'),
+#     ('rgbw', 'RGBW'),
+#     ('rgbaw', 'RGBAW'),
+#     ('rgbawuv', 'RGBAWUV'),
+#     ('other', 'Other'),
+# )
+# CONVENTIONAL_KIND_CHOICES = (
+#     ('500', '500'),
+#     ('575', '575'),
+#     ('750', '750'),
+#     ('1_000', '1_000'),
+# )
+
+# MOVER_KIND_CHOICES = (
+#     ('led_mover', 'LED Mover'),
+#     ('lamp_mover', 'Lamped Mover'),
+# )
+
+# SELECT_SOURCE = ('select_source', 'Select Source')
+
+
+
+
+# def get_kind(parent_type):
+#     if parent_type == 'led':
+#         # return LED_KIND_CHOICES
+#         return models.CharField(max_length=20, choices=LED_KIND_CHOICES, default='select_source')
+#     elif parent_type == 'conventional':
+#         # return CONVENTIONAL_KIND_CHOICES
+#         return models.CharField(max_length=20, choices=CONVENTIONAL_KIND_CHOICES, default='select_source')
+#     elif parent_type == 'mover':
+#         # return MOVER_KIND_CHOICES
+#         return models.CharField(max_length=20, choices=MOVER_KIND_CHOICES, default='select_source')
+#     else:
+#         print('Invalid choice')
+#         # raise ValueError

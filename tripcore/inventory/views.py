@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
-from .models import Fixture, Kind
+from .models import Fixture, Fixture_Type, Source_Type, Manufacturer, Source
 from .forms import FixtureForm
 
 # Create your views here.
@@ -31,20 +31,30 @@ class FixtureListView(ListView):
 
 
 class FixtureCreateView(CreateView):
-    model = FixtureForm
-    fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
-              'model', 'manufacturer', 'source', 'kind')
+    model = Fixture
+    form_class = FixtureForm
+    # fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
+    #           'model', 'manufacturer', 'source', 'kind')
     success_url = reverse_lazy('fixture_list')
 
 
 class FixtureUpdateView(UpdateView):
-    model = FixtureForm
-    fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
-              'model', 'manufacturer', 'source', 'kind')
+    model = Fixture
+    form_class = FixtureForm
+    # fields = ('owner', 'date_added', 'last_rented', 'last_sickbay', 'last_service',
+    #           'model', 'manufacturer', 'source', 'kind')
     success_url = reverse_lazy('fixture_list')
 
 
-def load_kinds(request):
+def load_source_types(request):
     source_id = request.GET.get('source')
-    kinds = Kind.objects.filter(source_id=source_id).order_by('name')
-    return render(request, 'inventory/kind_dropdown_options.html', {'kinds': kinds})
+    source_types = Source_Type.objects.filter(
+        source_id=source_id).order_by('name')
+    return render(request, 'inventory/source_type_dropdown_options.html', {'source_types': source_types})
+
+
+def load_fixture_types(request):
+    manufacturer_id = request.GET.get('manufacturer')
+    fixture_types = Fixture_Type.objects.filter(
+        manufacturer_id=manufacturer_id).order_by('name')
+    return render(request, 'inventory/fixture_type_dropdown_options.html', {'fixture_types': fixture_types})

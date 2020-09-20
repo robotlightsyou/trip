@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for fixture_type in fixture_types %}
+<option value="{{ fixture_type.pk }}">{{ fixture_type.name }}</option>
+{% endfor %}
