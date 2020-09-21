@@ -6,7 +6,7 @@
 
     <h2>Fixture Form</h2>
 
-    <form method="post" id="fixtureForm" data-fixture_types-url="{% url 'ajax_load_fixture_types' %}" novalidate>
+    <form method="post" id="fixtureForm" data-source_types-url="{% url 'ajax_load_source_types' %}" data-fixture_types-url="{% url 'ajax_load_fixture_types' %}" novalidate>
         {% comment %} {% csrf_token %} {% endcomment %}
         <table>
             {{ form|crispy }}
@@ -33,7 +33,7 @@
             });
         });
     </script>
-    {% comment %} <script>
+    <script>
         $("#id_source").change(function () {
         var url = $("#fixtureForm").attr("data-source_types-url");  // get the url of the `load_cities` view
         var sourceId = $(this).val();  // get the selected country ID from the HTML input
@@ -47,7 +47,7 @@
                 }
             });
         });
-    </script> {% endcomment %}
+    </script>
 
 
 
