@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-# from django.cntrib.auth.models import User
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
 from django import forms
@@ -23,11 +23,13 @@ class Source_Type(models.Model):
     def __str__(self):
         return self.name
 
+
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
 
 class Fixture_Type(models.Model):
     name = models.CharField(max_length=100)
@@ -36,19 +38,25 @@ class Fixture_Type(models.Model):
     def __str__(self):
         return self.name
 
+
 class Fixture(models.Model):
     # change to foreign key of users?
-    owner = models.CharField(max_length=100)
+    # owner_id = user.id  #must be logged in to create
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    # owner = models.CharField(max_length=100)
     date_added = models.DateTimeField(default=timezone.now)
     last_rented = models.DateTimeField(default=None)
     last_sickbay = models.DateTimeField(default=None)
     last_service = models.TextField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True)
-    fixture_type = models.ForeignKey(Fixture_Type, on_delete=models.SET_NULL, null=True)
+    manufacturer = models.ForeignKey(
+        Manufacturer, on_delete=models.SET_NULL, null=True)
+    fixture_type = models.ForeignKey(
+        Fixture_Type, on_delete=models.SET_NULL, null=True)
     # model = models.CharField(max_length=100)
     # manufacturer = models.CharField(max_length=100)
     source = models.ForeignKey(Source, on_delete=models.SET_NULL, null=True)
-    source_type = models.ForeignKey(Source_Type, on_delete=models.SET_NULL, null=True)
+    source_type = models.ForeignKey(
+        Source_Type, on_delete=models.SET_NULL, null=True)
     # source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default='conventional')
     # kind = get_kind(source)
     # kind = models.CharField(max_length=20, choices=choose_source(source) or SELECT_SOURCE, default = 'select_source')
@@ -57,7 +65,6 @@ class Fixture(models.Model):
 
     def __str__(self):
         return ' '.join([self.manufacturer, self.fixture_type])
-
 
 
 class Projector(Fixture):
@@ -111,7 +118,6 @@ class Hardware(Fixture):
 #     pass
 
 
-
 # def choose_source(source):
 #     if source == 'led':
 #         return LED_KIND_CHOICES
@@ -122,7 +128,6 @@ class Hardware(Fixture):
 #     else:
 #         print('Invalid choice')
 #         # raise ValueError
-
 
 
 # SOURCE_CHOICES = (
@@ -152,8 +157,6 @@ class Hardware(Fixture):
 # )
 
 # SELECT_SOURCE = ('select_source', 'Select Source')
-
-
 
 
 # def get_kind(parent_type):
