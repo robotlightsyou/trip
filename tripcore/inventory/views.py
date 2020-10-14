@@ -37,6 +37,11 @@ class FixtureCreateView(CreateView):
     #           'model', 'manufacturer', 'source', 'kind')
     success_url = reverse_lazy('fixture_list')
 
+    def get_initial(self, *args, **kwargs):
+        initial = super(FixtureCreateView, self).get_initial(**kwargs)
+        initial['title'] = 'Add Fixture'
+        return initial
+
 
 class FixtureUpdateView(UpdateView):
     model = Fixture

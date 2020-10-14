@@ -2,3 +2,4 @@
 **/.DS_STORE
 **/config_file*
 **Pipfile**
+**/__pycache__/*
